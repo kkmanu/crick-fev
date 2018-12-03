@@ -1,0 +1,47 @@
+# -*- coding: utf-8 -*-
+"""
+"""
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#Data Preprocessing
+dataset = pd.read_csv("all players_all players (1).csv")
+x = dataset.iloc[ : , 2:12].values
+y = dataset.iloc[:, 12].values
+
+
+#the train_test_split
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size = 0.2, random_state = 0)
+
+#Feature Scaling
+'''from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+x_train = sc.fit_transform(x_train)
+x_test = sc.fit_transform(x_test)
+y_train = sc.fit_transform(y_train.reshape(-1,1))
+y_test = sc.fit_transform(y_test.reshape(-1,1))'''
+
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+
+classifier = Sequential()
+classifier.add( Dense(output_dim =6, init= 'uniform', activation = 'relu',input_dim = 10))
+classifier.add( Dense(output_dim =6, init= 'uniform', activation = 'relu'))
+classifier.add( Dense(output_dim =1, init= 'uniform' ,activation = 'relu'))
+classifier.compile(optimizer= 'adam',loss='mae',metrics =['accuracy'])
+
+classifier.fit(x_train,y_train,batch_size=1,nb_epoch=30000)
+
+#xx_test = x_test[1, :]
+y_pred = classifier.predict(x_test)
+#y_pred = (y_pred>0.5)
+
+
+
+
+
+
+
